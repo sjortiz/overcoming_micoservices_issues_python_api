@@ -1,21 +1,36 @@
+import time
 from pymongo import MongoClient
 from flask import Flask, request
 from flask_restful import Resource, Api
 from bson.objectid import ObjectId
 
+# Flask configuration
 app = Flask(__name__)
 api = Api(app)
+# Mongo configuration
 client = MongoClient(
             host="0.0.0.0",
             port=27017,
-            username="root",
-            password="toor",
+            username="root",  # <- Credentials manager
+            password="toor",  # <- Credentials manager
         )
 db = client['todos']
 collection = db['tasks']
 
 
+# Separating the get_with_id function from the endpoint
+def get_with_id(todo_id):
+
+    data = collection.find_one({'_id': ObjectId(todo_id)})
+
+    if data:
+        data.update({'_id': str(data['_id'])})
+
+    return (data or {})
+
+
 class Todos(Resource):
+
     def get(self):
         return [
             {
@@ -42,12 +57,7 @@ class Todos(Resource):
 class TodoItem(Resource):
 
     def get(self, todo_id):
-        data = collection.find_one({'_id': ObjectId(todo_id)})
-
-        if data:
-            data.update({'_id': str(data['_id'])})
-
-        return data or {}
+        return get_with_id(todo_id)
 
 
 api.add_resource(Todos, '/')
