@@ -8,7 +8,7 @@ app = Flask(__name__)
 api = Api(app)
 # Mongo configuration
 client = MongoClient(
-            host="0.0.0.0",
+            host="mongo",
             port=27017,
             username="root",  # <- Credentials manager
             password="toor",  # <- Credentials manager
@@ -53,4 +53,4 @@ api.add_resource(Todos, '/')
 api.add_resource(TodoItem, '/id/<string:todo_id>')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0')
