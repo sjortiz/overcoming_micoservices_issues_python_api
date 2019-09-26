@@ -1,3 +1,4 @@
+import time
 from pymongo import MongoClient
 from flask import Flask, request
 from flask_restful import Resource, Api
@@ -26,6 +27,7 @@ cache = RedisCache(redis_client=client)
 @cache.cache(ttl=5)
 def get_with_id(todo_id):
 
+    time.sleep(5)
     data = collection.find_one({'_id': ObjectId(todo_id)})
 
     if data:
