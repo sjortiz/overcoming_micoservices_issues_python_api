@@ -1,5 +1,4 @@
 flask
 flask-restful
 pymongo
-python-redis-cache
 redis
