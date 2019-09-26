@@ -8,3 +8,9 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: toor
     ports:
       - 27017:27017
+  
+  redis:
+    image: redis
+    restart: always
+    ports:
+      - 6379:6379
