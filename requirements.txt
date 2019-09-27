@@ -1,4 +1,5 @@
 flask
 flask-restful
+hvac
 pymongo
 redis

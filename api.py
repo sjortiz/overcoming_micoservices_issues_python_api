@@ -1,7 +1,12 @@
+# Third-party libraries
 from pymongo import MongoClient
 from flask import Flask, request
 from flask_restful import Resource, Api
+# Custom libraries
 from resources.todo import Todo
+from resources.connections import credentials
+# Instanciating mongo credentials
+mongo_credentials = credentials.get_credentials('mongo_credentials')
 
 # Flask configuration
 app = Flask(__name__)
@@ -10,8 +15,8 @@ api = Api(app)
 client = MongoClient(
             host="mongo",
             port=27017,
-            username="root",  # <- Credentials manager
-            password="toor",  # <- Credentials manager
+            username=mongo_credentials.get('mongo_user'),
+            password=mongo_credentials.get('mongo_password'),
         )
 db = client['todos']
 collection = db['tasks']
@@ -53,4 +58,4 @@ api.add_resource(Todos, '/')
 api.add_resource(TodoItem, '/id/<string:todo_id>')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', debug=True)
